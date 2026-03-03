@@ -7,11 +7,12 @@ export default function BookSection() {
       <div className="book-inner">
         <ScrollAnimator>
           <div className="book-cover-area">
-            <div className="book-cover-placeholder">
-              <span className="book-subtitle-text">James Poulter</span>
-              <span className="book-title-text">AI at Work</span>
-              <span className="book-author-text">Bloomsbury &bull; 2026</span>
-            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="https://jamespoulter.co.uk/images/ai%20at%20work.jpg"
+              alt="AI at Work by James Poulter — book cover"
+              className="book-cover-image"
+            />
           </div>
         </ScrollAnimator>
         <ScrollAnimator>

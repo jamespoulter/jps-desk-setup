@@ -810,6 +810,19 @@ body::after {
   justify-content: center;
 }
 
+.book-cover-image {
+  width: 260px;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.08);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 80px var(--purple-glow);
+  transform: rotate(-2deg);
+  transition: transform 0.4s var(--ease);
+  object-fit: cover;
+}
+
+.book-cover-image:hover { transform: rotate(0deg) scale(1.02); }
+
 .book-cover-placeholder {
   width: 260px;
   height: 360px;
