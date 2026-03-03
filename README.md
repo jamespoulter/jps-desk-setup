@@ -4,42 +4,84 @@ A single-page website showcasing James Poulter's desk setup, gear, software stac
 
 **Live site concept:** Dark, modern aesthetic matching [jamespoulter.co.uk](https://www.jamespoulter.co.uk)
 
+Built with **Next.js 15**, **React 19**, and **TypeScript**. Statically exported for easy deployment anywhere.
+
 ---
 
 ## Quick Start
 
-Open `index.html` directly in a browser — no build step or dependencies required.
+```bash
+npm install
+npm run dev
+# Visit http://localhost:3000
+```
 
-Or serve locally:
+### Production Build
 
 ```bash
-python3 -m http.server 3000
-# Visit http://localhost:3000
+npm run build
+# Static output in /out — deploy to any static host
+```
+
+---
+
+## Project Structure
+
+```
+JP's Desk Setup/
+├── src/
+│   ├── app/
+│   │   ├── globals.css          # All styles (variables, components, responsive)
+│   │   ├── layout.tsx           # Root layout with metadata
+│   │   └── page.tsx             # Main page composing all sections
+│   ├── components/
+│   │   ├── Navigation.tsx       # Sticky nav with hamburger + active section
+│   │   ├── Hero.tsx             # Hero banner with animated orbs
+│   │   ├── SectionHeader.tsx    # Numbered section headings
+│   │   ├── ScrollAnimator.tsx   # Scroll-triggered animation wrapper
+│   │   ├── GallerySection.tsx   # Photo gallery grid
+│   │   ├── GearSection.tsx      # Product cards with category filter
+│   │   ├── SoftwareSection.tsx  # Tabbed software stack
+│   │   ├── BookSection.tsx      # AI at Work book CTA
+│   │   ├── Footer.tsx           # Footer with social links
+│   │   ├── Lightbox.tsx         # Fullscreen image lightbox
+│   │   └── LightboxContext.tsx  # Shared lightbox state provider
+│   ├── data/
+│   │   ├── products.ts          # 27 products across 8 categories
+│   │   ├── categories.ts        # Category definitions
+│   │   ├── software.ts          # Software stack (3 tabs, 9 items)
+│   │   ├── gallery.ts           # Gallery image data
+│   │   └── icons.tsx            # SVG icons as React components
+│   └── hooks/
+│       └── useIntersectionObserver.ts  # Scroll animation hook
+├── public/images/               # Add your own images here
+│   ├── setup/                   # Desk gallery photos
+│   ├── products/                # Individual product images
+│   ├── software/                # Software logos/icons
+│   └── book/                    # AI at Work cover image
+├── index.html                   # Original single-file version (archived)
+├── package.json
+├── next.config.ts
+├── tsconfig.json
+└── README.md
 ```
 
 ---
 
 ## Editing Products
 
-All product data lives at the top of the `<script>` block in `index.html`. Find the `PRODUCTS` array:
+Product data lives in `src/data/products.ts`:
 
-```javascript
-const PRODUCTS = [
-  {
-    name: "Elgato Prompter",
-    category: "cameras",       // Must match a CATEGORIES key
-    description: "Teleprompter for on-camera reading",
-    image: "",                 // Path or URL to product image
-    affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG",
-    brandUrl: "https://www.elgato.com/..."
-  },
-  // ...
-];
+```typescript
+{
+  name: "Elgato Prompter",
+  category: "cameras",        // Must match a CATEGORIES id
+  description: "Teleprompter for on-camera reading",
+  image: "",                  // Path or URL to product image
+  affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG",
+  brandUrl: "https://www.elgato.com/..."
+}
 ```
-
-### To add a product
-
-Add a new object to the `PRODUCTS` array. Required fields:
 
 | Field | Description |
 |-------|-------------|
@@ -50,63 +92,7 @@ Add a new object to the `PRODUCTS` array. Required fields:
 | `affiliateUrl` | Amazon affiliate link |
 | `brandUrl` | Manufacturer product page |
 
-### To remove a product
-
-Delete the corresponding object from the `PRODUCTS` array.
-
-### To add a new category
-
-1. Add the category to the `CATEGORIES` object:
-   ```javascript
-   const CATEGORIES = {
-     // ...existing categories
-     newcategory: "Display Label"
-   };
-   ```
-2. Use the new category key in your product objects.
-
----
-
-## Editing Software
-
-Find the `SOFTWARE` array below the products data:
-
-```javascript
-const SOFTWARE = [
-  {
-    tab: "Live Streaming & Video",
-    items: [
-      { name: "Ecamm Live", description: "...", url: "https://...", tag: "paid", tagLabel: "Paid" },
-      // ...
-    ]
-  },
-  // ...
-];
-```
-
-- `tag` controls the pill color: `paid`, `free`, or `freemium`
-- `tagLabel` is the display text for the pill
-
----
-
-## Adding Setup Photos
-
-Find the `GALLERY` array:
-
-```javascript
-const GALLERY = [
-  { src: "", alt: "Full desk overview", caption: "The Complete Setup" },
-  // ...
-];
-```
-
-Replace the empty `src` values with paths to your images:
-
-```javascript
-{ src: "images/setup/desk-overview.jpg", alt: "Full desk overview", caption: "The Complete Setup" }
-```
-
-Recommended image sizes: **1200x800px** or larger for the lightbox to look sharp.
+Categories are defined in `src/data/categories.ts`. Software items in `src/data/software.ts`.
 
 ---
 
@@ -118,7 +104,7 @@ All Amazon links use this format:
 https://www.amazon.co.uk/dp/PRODUCT_ID?tag=YOUR-TAG
 ```
 
-**To set your affiliate tag**, find-and-replace `YOUR-TAG` across the file with your actual Amazon Associates tag.
+**To set your affiliate tag**, find-and-replace `YOUR-TAG` across the data files with your actual Amazon Associates tag.
 
 All affiliate links include `rel="noopener noreferrer sponsored"` for compliance.
 
@@ -126,41 +112,27 @@ All affiliate links include `rel="noopener noreferrer sponsored"` for compliance
 
 ## Deployment
 
-### Netlify (drag & drop)
-1. Go to [app.netlify.com/drop](https://app.netlify.com/drop)
-2. Drag the project folder onto the page
-3. Done — you'll get a live URL
+### Vercel (recommended)
+1. Push to GitHub
+2. Import the repo on [vercel.com](https://vercel.com)
+3. Deploy — zero config needed
+
+### Netlify
+1. Run `npm run build`
+2. Deploy the `out/` directory
 
 ### GitHub Pages
-1. Push the repo to GitHub
-2. Go to **Settings → Pages**
-3. Set source to the branch containing `index.html`
-4. Site will be live at `https://username.github.io/repo-name`
-
-### Existing Next.js site
-Copy `index.html` into your Next.js project's `public/` folder. It will be accessible at `/index.html` (or rename as needed).
+1. Run `npm run build`
+2. Push the `out/` folder contents to your GitHub Pages branch
 
 ---
 
-## Project Structure
+## Tech Stack
 
-```
-JP's Desk Setup/
-├── index.html          # Entire website (HTML + CSS + JS)
-├── README.md           # This file
-└── images/             # Add your own images here
-    ├── setup/          # Desk gallery photos
-    ├── products/       # Individual product images
-    ├── software/       # Software logos/icons
-    └── book/           # AI at Work cover image
-```
-
----
-
-## Tech Details
-
-- **Zero dependencies** — no CDN links, no npm, no build step
-- **Single file** — all HTML, CSS, and JS in one `index.html`
+- **Next.js 15** — App Router with static export
+- **React 19** — Server and Client Components
+- **TypeScript** — Full type safety
+- **Global CSS** — Custom properties design system
 - **Mobile-first** responsive design (breakpoints at 768px and 1024px)
 - **Scroll animations** via Intersection Observer
 - **Lightbox** with keyboard navigation (Escape, Arrow keys)
@@ -171,4 +143,4 @@ JP's Desk Setup/
 
 ## License
 
-Copyright 2024–2026 Poulter Ventures. All rights reserved.
+Copyright 2024-2026 Poulter Ventures. All rights reserved.

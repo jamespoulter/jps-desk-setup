@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "desk-setup",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "3000"],
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
       "port": 3000
     }
   ]
