@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#1a1a2e"/>
+  <rect x="1" y="1" width="798" height="598" fill="none" stroke="#e84e1b" stroke-width="2" stroke-dasharray="8,4" rx="8"/>
+  <text x="400" y="275" text-anchor="middle" fill="#888" font-family="system-ui,sans-serif" font-size="24" font-weight="600">3D Printing</text>
+  <text x="400" y="320" text-anchor="middle" fill="#555" font-family="system-ui,sans-serif" font-size="14">Replace with 3d-printing.jpg</text>
+  <line x1="360" y1="230" x2="440" y2="230" stroke="#e84e1b" stroke-width="2"/>
+</svg>

@@ -421,6 +421,12 @@ body::after {
 
 .gallery-item:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
 
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .gallery-placeholder {
   width: 100%;
   height: 100%;
