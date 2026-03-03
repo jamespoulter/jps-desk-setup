@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JP's Desk Setup | James Poulter</title>
+<meta name="description" content="The complete desk setup, gear, and software stack behind James Poulter's content creation, live streaming and AI workflow.">
+<meta name="author" content="James Poulter">
+<meta property="og:title" content="JP's Desk Setup">
+<meta property="og:description" content="The complete desk setup, gear, and software stack behind James Poulter's content creation, live streaming and AI workflow.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@jamespoulter">
+<style>
+/* ============================================
+   CSS VARIABLES & RESET
+   ============================================ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #141414;
+  --bg-card-hover: #1a1a1a;
+  --bg-elevated: #111;
+  --text: #f5f5f5;
+  --text-secondary: #a0a0a0;
+  --text-muted: #555;
+  --accent: #e84e1b;
+  --accent-light: #ff6b3d;
+  --accent-glow: rgba(232, 78, 27, 0.12);
+  --accent-glow-strong: rgba(232, 78, 27, 0.25);
+  --purple: #1d175f;
+  --purple-light: #2d2580;
+  --purple-glow: rgba(29, 23, 95, 0.4);
+  --border: #1e1e1e;
+  --border-light: #2a2a2a;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 100px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration: 0.4s;
+  --container: min(1200px, 92vw);
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+/* Noise texture overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.3s;
+}
+
+.nav-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 64px;
+}
+
+.nav-logo {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.nav-logo span { color: var(--accent); }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  transition: color 0.3s;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: var(--accent);
+  transition: width 0.3s var(--ease);
+}
+
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+.nav-links .nav-external {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--text);
+  transition: transform 0.3s, opacity 0.3s;
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 1.5rem;
+  transform: translateY(-10px);
+  opacity: 0;
+  transition: transform 0.3s var(--ease), opacity 0.3s;
+}
+
+.mobile-menu.open { transform: translateY(0); opacity: 1; }
+
+.mobile-menu a {
+  display: block;
+  padding: 0.75rem 0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border);
+  transition: color 0.3s;
+}
+
+.mobile-menu a:last-child { border-bottom: none; }
+.mobile-menu a:hover { color: var(--accent); }
+
+/* ============================================
+   HERO
+   ============================================ */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 6rem 1.5rem 4rem;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(20, 20, 20, 1) 0%, var(--bg) 70%);
+}
+
+/* Dot grid pattern */
+.hero-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+/* Floating orbs */
+.hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.hero-orb-1 {
+  width: 500px;
+  height: 500px;
+  background: var(--accent);
+  opacity: 0.07;
+  top: 10%;
+  left: 5%;
+  animation: float1 25s ease-in-out infinite;
+}
+
+.hero-orb-2 {
+  width: 350px;
+  height: 350px;
+  background: var(--purple);
+  opacity: 0.1;
+  top: 50%;
+  right: 5%;
+  animation: float2 20s ease-in-out infinite;
+}
+
+.hero-orb-3 {
+  width: 250px;
+  height: 250px;
+  background: #fff;
+  opacity: 0.02;
+  bottom: 15%;
+  left: 30%;
+  animation: float3 30s ease-in-out infinite;
+}
+
+@keyframes float1 { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(30px, -40px); } 66% { transform: translate(-20px, 20px); } }
+@keyframes float2 { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(-25px, 30px); } 66% { transform: translate(15px, -25px); } }
+@keyframes float3 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(40px, -30px); } }
+
+.hero-content {
+  position: relative;
+  z-index: 1;
+  max-width: 800px;
+}
+
+.hero-label {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) 0.2s forwards;
+}
+
+.hero-title {
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  margin-bottom: 1.5rem;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) 0.4s forwards;
+}
+
+.hero-title .accent { color: var(--accent); }
+
+.hero-subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--text-secondary);
+  max-width: 550px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) 0.6s forwards;
+}
+
+.hero-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  border-radius: var(--radius-pill);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+  opacity: 0;
+  animation: fadeUp 0.8s var(--ease) 0.8s forwards;
+}
+
+.hero-cta:hover {
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-glow-strong);
+}
+
+.hero-cta svg { transition: transform 0.3s; }
+.hero-cta:hover svg { transform: translateY(3px); }
+
+.hero-scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeIn 1s ease 1.5s forwards;
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, var(--text-muted), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse { 0%, 100% { opacity: 0.5; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.3); } }
+
+/* ============================================
+   SECTION LAYOUT
+   ============================================ */
+.section {
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  max-width: var(--container);
+  margin: 0 auto;
+}
+
+.section-header {
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.section-number {
+  font-size: clamp(4rem, 10vw, 7rem);
+  font-weight: 900;
+  color: rgba(232, 78, 27, 0.06);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  position: absolute;
+  top: -1.5rem;
+  left: -0.5rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+  display: block;
+  position: relative;
+}
+
+.section-title {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  position: relative;
+}
+
+.section-divider {
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  margin-top: 1rem;
+}
+
+/* ============================================
+   GALLERY
+   ============================================ */
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.gallery-item {
+  aspect-ratio: 4/3;
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s;
+}
+
+.gallery-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+}
+
+.gallery-item:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+
+.gallery-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1a1a 0%, #111 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  position: relative;
+  overflow: hidden;
+}
+
+.gallery-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.02) 1px, transparent 0);
+  background-size: 20px 20px;
+}
+
+.gallery-placeholder svg { color: var(--text-muted); opacity: 0.5; }
+
+.gallery-placeholder span {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  position: relative;
+}
+
+/* ============================================
+   PRODUCT FILTERS
+   ============================================ */
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.filter-pill {
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 1.1rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  transition: all 0.3s var(--ease);
+  white-space: nowrap;
+}
+
+.filter-pill:hover { border-color: var(--accent); color: var(--text); }
+
+.filter-pill.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+
+/* ============================================
+   PRODUCT CARDS
+   ============================================ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s;
+  position: relative;
+}
+
+/* Scan-line hover effect */
+.product-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+  top: 0;
+  opacity: 0;
+  transition: top 0.6s var(--ease), opacity 0.3s;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(232, 78, 27, 0.3);
+  box-shadow: 0 12px 40px var(--accent-glow);
+}
+
+.product-card:hover::after { top: 100%; opacity: 1; }
+
+.product-image {
+  aspect-ratio: 16/10;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-image-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.product-image-placeholder svg {
+  width: 40px;
+  height: 40px;
+  color: var(--text-muted);
+  opacity: 0.4;
+  position: relative;
+  z-index: 1;
+}
+
+.product-image-placeholder::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.015) 1px, transparent 0);
+  background-size: 16px 16px;
+}
+
+.cat-cameras { background: linear-gradient(135deg, #1a1218 0%, #141414 100%); }
+.cat-audio { background: linear-gradient(135deg, #121a18 0%, #141414 100%); }
+.cat-monitors { background: linear-gradient(135deg, #12141a 0%, #141414 100%); }
+.cat-peripherals { background: linear-gradient(135deg, #1a1a12 0%, #141414 100%); }
+.cat-lighting { background: linear-gradient(135deg, #1a1612 0%, #141414 100%); }
+.cat-control { background: linear-gradient(135deg, #16121a 0%, #141414 100%); }
+.cat-printing { background: linear-gradient(135deg, #121a1a 0%, #141414 100%); }
+.cat-devices { background: linear-gradient(135deg, #1a1214 0%, #141414 100%); }
+
+.product-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.65rem;
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-pill);
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  z-index: 1;
+}
+
+.product-info { padding: 1.25rem; }
+
+.product-name {
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.4rem;
+}
+
+.product-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-affiliate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 0.5rem 0.9rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  transition: background 0.3s, transform 0.2s;
+}
+
+.btn-affiliate:hover { background: var(--accent-light); transform: translateY(-1px); }
+
+.btn-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.btn-brand:hover { border-color: var(--text-secondary); color: var(--text); }
+
+/* ============================================
+   SOFTWARE TABS
+   ============================================ */
+.software-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.software-tabs::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  padding: 1rem 1.5rem;
+  color: var(--text-muted);
+  transition: color 0.3s;
+  white-space: nowrap;
+  position: relative;
+}
+
+.tab-btn:hover { color: var(--text-secondary); }
+
+.tab-btn.active { color: var(--accent); }
+
+.tab-indicator {
+  position: absolute;
+  bottom: -1px;
+  height: 2px;
+  background: var(--accent);
+  transition: left 0.4s var(--ease), width 0.4s var(--ease);
+}
+
+.software-grid { display: flex; flex-direction: column; gap: 0.75rem; }
+
+.software-card {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: 1.25rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: border-color 0.3s, background 0.3s, transform 0.3s;
+}
+
+.software-card:hover {
+  border-color: var(--border-light);
+  background: var(--bg-card-hover);
+  transform: translateX(4px);
+}
+
+.software-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.software-icon svg { width: 24px; height: 24px; }
+
+.software-info { flex: 1; min-width: 0; }
+
+.software-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.25rem;
+}
+
+.software-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.tag {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--radius-pill);
+}
+
+.tag-free { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+.tag-paid { background: rgba(232, 78, 27, 0.12); color: var(--accent-light); }
+.tag-freemium { background: rgba(59, 130, 246, 0.12); color: #60a5fa; }
+
+.software-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.software-link {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.3s;
+  flex-shrink: 0;
+}
+
+.software-link:hover { color: var(--accent); }
+
+/* ============================================
+   BOOK CTA
+   ============================================ */
+.book-section {
+  position: relative;
+  padding: clamp(4rem, 8vw, 7rem) 1.5rem;
+  overflow: hidden;
+}
+
+.book-bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #0a0a0a 0%, #0f0d2e 40%, #1d175f 100%);
+  border-top: 1px solid rgba(29, 23, 95, 0.3);
+  border-bottom: 1px solid rgba(29, 23, 95, 0.3);
+}
+
+.book-bg::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--purple-glow), transparent 70%);
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.book-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.book-cover-area {
+  display: flex;
+  justify-content: center;
+}
+
+.book-cover-placeholder {
+  width: 260px;
+  height: 360px;
+  background: linear-gradient(160deg, #2d2580 0%, #1d175f 50%, #0f0d2e 100%);
+  border-radius: var(--radius);
+  border: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 80px var(--purple-glow);
+  transform: rotate(-2deg);
+  transition: transform 0.4s var(--ease);
+}
+
+.book-cover-placeholder:hover { transform: rotate(0deg) scale(1.02); }
+
+.book-cover-placeholder .book-title-text {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-align: center;
+  padding: 0 1.5rem;
+  line-height: 1.2;
+}
+
+.book-cover-placeholder .book-subtitle-text {
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.book-cover-placeholder .book-author-text {
+  font-size: 0.75rem;
+  color: var(--accent-light);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  margin-top: 1rem;
+}
+
+.book-content { text-align: left; }
+
+.book-eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.book-heading {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.book-launch-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  background: rgba(232, 78, 27, 0.12);
+  border: 1px solid rgba(232, 78, 27, 0.2);
+  border-radius: var(--radius-pill);
+  color: var(--accent-light);
+  margin-bottom: 1.5rem;
+}
+
+.book-description {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.book-benefits {
+  list-style: none;
+  margin-bottom: 2rem;
+}
+
+.book-benefits li {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  padding: 0.4rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.book-benefits li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  transform: translateY(-50%);
+}
+
+.book-cta-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+.btn-book-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 1rem 2rem;
+  background: var(--accent);
+  color: #fff;
+  border-radius: var(--radius-pill);
+  transition: background 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+
+.btn-book-primary:hover {
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px var(--accent-glow-strong);
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.footer {
+  border-top: 1px solid var(--border);
+  padding: 4rem 1.5rem 2rem;
+}
+
+.footer-inner {
+  max-width: var(--container);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+.footer-brand p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  line-height: 1.6;
+}
+
+.footer-brand .footer-logo {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.footer-brand .footer-logo span { color: var(--accent); }
+
+.footer-heading {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.footer-links { list-style: none; }
+
+.footer-links li { margin-bottom: 0.5rem; }
+
+.footer-links a {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: color 0.3s;
+}
+
+.footer-links a:hover { color: var(--accent); }
+
+.footer-social {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+
+.footer-social a {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid var(--border-light);
+  color: var(--text-muted);
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+}
+
+.footer-social a:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+
+.footer-social svg { width: 16px; height: 16px; }
+
+.footer-disclaimer {
+  max-width: var(--container);
+  margin: 3rem auto 0;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  text-align: center;
+}
+
+/* ============================================
+   LIGHTBOX
+   ============================================ */
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+
+.lightbox.active { opacity: 1; pointer-events: auto; }
+
+.lightbox-close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  transition: color 0.3s;
+  z-index: 1;
+}
+
+.lightbox-close:hover { color: var(--text); }
+
+.lightbox-content {
+  max-width: 90vw;
+  max-height: 85vh;
+  text-align: center;
+}
+
+.lightbox-content img {
+  max-width: 100%;
+  max-height: 80vh;
+  border-radius: var(--radius);
+}
+
+.lightbox-caption {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: 50%;
+  transition: border-color 0.3s, color 0.3s;
+}
+
+.lightbox-nav:hover { border-color: var(--accent); color: var(--text); }
+.lightbox-prev { left: 1.5rem; }
+.lightbox-next { right: 1.5rem; }
+
+/* ============================================
+   SCROLL ANIMATIONS
+   ============================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+[data-animate] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+
+[data-animate].visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger children */
+[data-animate-stagger] > * {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+
+[data-animate-stagger].visible > * { opacity: 1; transform: translateY(0); }
+[data-animate-stagger].visible > *:nth-child(1) { transition-delay: 0s; }
+[data-animate-stagger].visible > *:nth-child(2) { transition-delay: 0.05s; }
+[data-animate-stagger].visible > *:nth-child(3) { transition-delay: 0.1s; }
+[data-animate-stagger].visible > *:nth-child(4) { transition-delay: 0.15s; }
+[data-animate-stagger].visible > *:nth-child(5) { transition-delay: 0.2s; }
+[data-animate-stagger].visible > *:nth-child(6) { transition-delay: 0.25s; }
+[data-animate-stagger].visible > *:nth-child(7) { transition-delay: 0.3s; }
+[data-animate-stagger].visible > *:nth-child(8) { transition-delay: 0.35s; }
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (min-width: 768px) {
+  .book-inner { grid-template-columns: auto 1fr; gap: 4rem; }
+  .footer-inner { grid-template-columns: 2fr 1fr 1fr; }
+  .gallery-item:nth-child(1) { grid-column: span 2; }
+}
+
+@media (min-width: 1024px) {
+  .nav-links { display: flex; }
+  .hamburger { display: none; }
+  .mobile-menu { display: none !important; }
+}
+
+@media (max-width: 1023px) {
+  .nav-links { display: none; }
+  .hamburger { display: flex; }
+  .mobile-menu { display: block; }
+}
+
+@media (max-width: 767px) {
+  .gallery-item:nth-child(1) { grid-column: span 1; }
+  .book-inner { text-align: center; }
+  .book-content { text-align: center; }
+  .book-cta-row { justify-content: center; }
+  .book-benefits li { text-align: left; }
+  .footer-inner { text-align: center; }
+  .footer-social { justify-content: center; }
+  .software-card { flex-direction: column; text-align: center; }
+  .software-link { align-self: center; }
+}
+</style>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">JP<span>'</span>s Desk Setup</a>
+    <ul class="nav-links">
+      <li><a href="#setup">Setup</a></li>
+      <li><a href="#gear">Gear</a></li>
+      <li><a href="#software">Software</a></li>
+      <li><a href="#book">AI at Work</a></li>
+      <li><a href="https://www.jamespoulter.co.uk" target="_blank" rel="noopener" class="nav-external">jamespoulter.co.uk ↗</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#setup" class="mobile-link">Setup</a>
+  <a href="#gear" class="mobile-link">Gear</a>
+  <a href="#software" class="mobile-link">Software</a>
+  <a href="#book" class="mobile-link">AI at Work</a>
+  <a href="https://www.jamespoulter.co.uk" target="_blank" rel="noopener">jamespoulter.co.uk ↗</a>
+</div>
+
+<!-- Hero -->
+<section class="hero" id="hero">
+  <div class="hero-bg">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+  </div>
+  <div class="hero-content">
+    <span class="hero-label">Content Creator • Speaker • AI Futurist</span>
+    <h1 class="hero-title">JP's Desk<br><span class="accent">Setup</span></h1>
+    <p class="hero-subtitle">The tools, tech &amp; software powering my content creation, live streaming and AI workflow.</p>
+    <a href="#gear" class="hero-cta">
+      Explore the Kit
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M19 12l-7 7-7-7"/></svg>
+    </a>
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- Setup Gallery -->
+<section class="section" id="setup">
+  <div class="section-header" data-animate>
+    <span class="section-number">01</span>
+    <span class="section-label">Gallery</span>
+    <h2 class="section-title">The Setup</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="gallery-grid" id="galleryGrid" data-animate-stagger></div>
+</section>
+
+<!-- Product Cards -->
+<section class="section" id="gear">
+  <div class="section-header" data-animate>
+    <span class="section-number">02</span>
+    <span class="section-label">Hardware</span>
+    <h2 class="section-title">The Gear</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="filter-bar" id="filterBar" data-animate></div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- Software Stack -->
+<section class="section" id="software">
+  <div class="section-header" data-animate>
+    <span class="section-number">03</span>
+    <span class="section-label">Apps & Tools</span>
+    <h2 class="section-title">The Software Stack</h2>
+    <div class="section-divider"></div>
+  </div>
+  <div class="software-tabs" id="softwareTabs" data-animate>
+    <div class="tab-indicator" id="tabIndicator"></div>
+  </div>
+  <div id="softwareContent" data-animate></div>
+</section>
+
+<!-- AI at Work Book -->
+<section class="book-section" id="book">
+  <div class="book-bg"></div>
+  <div class="book-inner">
+    <div class="book-cover-area" data-animate>
+      <div class="book-cover-placeholder">
+        <span class="book-subtitle-text">James Poulter</span>
+        <span class="book-title-text">AI at Work</span>
+        <span class="book-author-text">Bloomsbury • 2026</span>
+      </div>
+    </div>
+    <div class="book-content" data-animate>
+      <span class="book-eyebrow">New Book</span>
+      <h2 class="book-heading">Check out my first book — AI At Work</h2>
+      <span class="book-launch-badge">Launching August 2026</span>
+      <p class="book-description">Transform your organisation with practical AI frameworks, implementation strategies, and real-world insights from the frontlines of AI adoption.</p>
+      <ul class="book-benefits">
+        <li>Sign up for launch event invites in the US &amp; UK</li>
+        <li>Get exclusive webinar invites and bonus content</li>
+        <li>Early access to chapters and frameworks</li>
+        <li>Priority access to book launch events</li>
+        <li>Behind-the-scenes updates on the writing process</li>
+      </ul>
+      <div class="book-cta-row">
+        <a href="https://www.jamespoulter.co.uk/aiatwork" target="_blank" rel="noopener" class="btn-book-primary">
+          Sign Up &amp; Learn More
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="footer-logo">JP<span>'</span>s Desk Setup</div>
+      <p>Part of <a href="https://www.jamespoulter.co.uk" target="_blank" rel="noopener" style="color:var(--accent)">jamespoulter.co.uk</a><br>The complete gear and software behind my content creation workflow.</p>
+    </div>
+    <div>
+      <h4 class="footer-heading">Quick Links</h4>
+      <ul class="footer-links">
+        <li><a href="https://www.jamespoulter.co.uk/#about" target="_blank" rel="noopener">About</a></li>
+        <li><a href="https://www.jamespoulter.co.uk/aiatwork" target="_blank" rel="noopener">AI at Work</a></li>
+        <li><a href="https://www.jamespoulter.co.uk/#speaking" target="_blank" rel="noopener">Speaking</a></li>
+        <li><a href="https://www.jamespoulter.co.uk/#contact" target="_blank" rel="noopener">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4 class="footer-heading">Connect</h4>
+      <ul class="footer-social">
+        <li><a href="https://linkedin.com/in/jamespoulter" target="_blank" rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a></li>
+        <li><a href="https://youtube.com/@jamespoulter" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a></li>
+        <li><a href="https://instagram.com/jamespoulter" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C8.74 0 8.333.015 7.053.072 5.775.132 4.905.333 4.14.63c-.789.306-1.459.717-2.126 1.384S.935 3.35.63 4.14C.333 4.905.131 5.775.072 7.053.012 8.333 0 8.74 0 12s.015 3.667.072 4.947c.06 1.277.261 2.148.558 2.913.306.788.717 1.459 1.384 2.126.667.666 1.336 1.079 2.126 1.384.766.296 1.636.499 2.913.558C8.333 23.988 8.74 24 12 24s3.667-.015 4.947-.072c1.277-.06 2.148-.262 2.913-.558.788-.306 1.459-.718 2.126-1.384.666-.667 1.079-1.335 1.384-2.126.296-.765.499-1.636.558-2.913.06-1.28.072-1.687.072-4.947s-.015-3.667-.072-4.947c-.06-1.277-.262-2.149-.558-2.913-.306-.789-.718-1.459-1.384-2.126C21.319 1.347 20.651.935 19.86.63c-.765-.297-1.636-.499-2.913-.558C15.667.012 15.26 0 12 0zm0 2.16c3.203 0 3.585.016 4.85.071 1.17.055 1.805.249 2.227.415.562.217.96.477 1.382.896.419.42.679.819.896 1.381.164.422.36 1.057.413 2.227.057 1.266.07 1.646.07 4.85s-.015 3.585-.074 4.85c-.061 1.17-.256 1.805-.421 2.227-.224.562-.479.96-.899 1.382-.419.419-.824.679-1.38.896-.42.164-1.065.36-2.235.413-1.274.057-1.649.07-4.859.07-3.211 0-3.586-.015-4.859-.074-1.171-.061-1.816-.256-2.236-.421-.569-.224-.96-.479-1.379-.899-.421-.419-.69-.824-.9-1.38-.165-.42-.359-1.065-.42-2.235-.045-1.26-.061-1.649-.061-4.844 0-3.196.016-3.586.061-4.861.061-1.17.255-1.814.42-2.234.21-.57.479-.96.9-1.381.419-.419.81-.689 1.379-.898.42-.166 1.051-.361 2.221-.421 1.275-.045 1.65-.06 4.859-.06l.045.03zm0 3.678a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm7.846-10.405a1.441 1.441 0 11-2.882 0 1.441 1.441 0 012.882 0z"/></svg></a></li>
+        <li><a href="https://x.com/jamespoulter" target="_blank" rel="noopener" aria-label="X / Twitter"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-disclaimer">
+    Some links on this page are affiliate links. This means I may earn a small commission if you purchase through them, at no extra cost to you. I only recommend products I personally use and trust.<br>
+    © 2024–2026 Poulter Ventures. All rights reserved.
+  </div>
+</footer>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lightboxClose">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightboxPrev">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <button class="lightbox-nav lightbox-next" id="lightboxNext">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+  </button>
+  <div class="lightbox-content">
+    <img id="lightboxImg" src="" alt="">
+    <p class="lightbox-caption" id="lightboxCaption"></p>
+  </div>
+</div>
+
+<script>
+// ============================================
+// PRODUCT DATA — Edit your gear list below
+// To add a product: copy any item block and fill in the fields
+// To add a real image: set the 'image' field to a URL
+// Amazon affiliate: replace YOUR-TAG with your affiliate tag
+// ============================================
+const PRODUCTS = [
+  // --- Cameras & Video ---
+  { name: "Elgato Prompter", category: "cameras", description: "Teleprompter for on-camera reading. Read scripts and notes while maintaining eye contact with your audience.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B0CN4FQ4GG?tag=YOUR-TAG", brandUrl: "https://www.elgato.com/uk/en/p/prompter" },
+  { name: "Sony ZV-E10 + Sigma 16mm f/1.4", category: "cameras", description: "Primary camera for streaming and video. Beautiful bokeh and stunning low-light performance with the Sigma 16mm lens.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B098JFRMGD?tag=YOUR-TAG", brandUrl: "https://www.sony.co.uk/interchangeable-lens-cameras/products/zv-e10" },
+  { name: "Insta360 Link 2", category: "cameras", description: "AI-powered 4K webcam with gesture control. My backup camera and overhead camera for desk shots.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B0DCLYGXFQ?tag=YOUR-TAG", brandUrl: "https://www.insta360.com/product/insta360-link2" },
+  { name: "Elgato Low Profile Mic Arm", category: "cameras", description: "Low profile desk-mount arms for mic and camera. Two of these keep my setup clean and adjustable.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B097376LKF?tag=YOUR-TAG", brandUrl: "https://www.elgato.com/uk/en/p/wave-mic-arm-lp" },
+
+  // --- Audio ---
+  { name: "RØDE PodMic (XLR)", category: "audio", description: "Professional broadcast-quality dynamic microphone. Rich, warm sound perfect for podcasting and streaming.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B09N16WRTY?tag=YOUR-TAG", brandUrl: "https://rode.com/en/microphones/studio-condenser/podmic" },
+  { name: "Elgato Wave XLR", category: "audio", description: "Premium USB audio interface for XLR mics. Includes capacitive mute button, gain dial and Elgato Wave Link software.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B09GCMP7Y7?tag=YOUR-TAG", brandUrl: "https://www.elgato.com/uk/en/p/wave-xlr" },
+  { name: "Apple HomePod Mini (×2)", category: "audio", description: "Desk speakers for monitoring and music. Stereo pair delivers surprisingly rich audio for their tiny size.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B08LFV5JRC?tag=YOUR-TAG", brandUrl: "https://www.apple.com/uk/homepod-mini/" },
+
+  // --- Monitors ---
+  { name: "LG 32\" 4K Monitor", category: "monitors", description: "Primary display for editing and productivity. 32 inches of 4K real estate on a generic Amazon monitor arm.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.lg.com/uk/monitors/" },
+  { name: "Dell 27\" Monitor", category: "monitors", description: "Secondary rear-projection display for live streaming backgrounds. Connected via Chromecast for easy content casting.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.dell.com/en-uk/shop/monitors" },
+
+  // --- Peripherals ---
+  { name: "NuPhy Air75", category: "peripherals", description: "Primary wireless mechanical keyboard. Ultra-slim, hot-swappable switches and gorgeous RGB lighting.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://nuphy.com/products/air75-v2" },
+  { name: "NuPhy Air60 v2", category: "peripherals", description: "Compact travel mechanical keyboard. 60% layout perfect for on-the-go productivity without compromise.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://nuphy.com/products/air60-v2" },
+  { name: "Logitech MX Keys", category: "peripherals", description: "Full-size backup keyboard. Perfect typing feel with smart backlighting and multi-device switching.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B07W7KRBNM?tag=YOUR-TAG", brandUrl: "https://www.logitech.com/en-gb/products/keyboards/mx-keys-s.html" },
+  { name: "Logitech MX Keys Mini for Mac", category: "peripherals", description: "Compact backup keyboard optimised for Mac. Minimalist footprint with all the MX Keys quality.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B09DP9VHTG?tag=YOUR-TAG", brandUrl: "https://www.logitech.com/en-gb/products/keyboards/mx-keys-mini-for-mac.html" },
+  { name: "Logitech MX Master 4", category: "peripherals", description: "Primary mouse with the middle button mapped to Wispr Flow for instant voice-to-text input. Ergonomic and precise.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.logitech.com/en-gb/products/mice/mx-master-3s.html" },
+
+  // --- Lighting ---
+  { name: "Elgato Ring Light", category: "lighting", description: "Key light for video calls and streaming. Edge-lit design with app-controlled brightness and colour temperature.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B0CLL2LDQ1?tag=YOUR-TAG", brandUrl: "https://www.elgato.com/uk/en/p/ring-light" },
+  { name: "Aputure Amaran", category: "lighting", description: "Professional key light for studio-quality lighting. Powerful LED panel for interviews, streams and video production.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.aputure.com/products/amaran" },
+  { name: "Govee Light Bars & Bulbs", category: "lighting", description: "Ambient RGB lighting for desk aesthetic. App-controlled colour scenes that transform the workspace mood.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.govee.com" },
+  { name: "Tapo Smart Bulbs", category: "lighting", description: "Smart home connected ambient lighting. Easy to set up, energy efficient and controllable from anywhere.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.tapo.com/uk/product/smart-light-bulb/" },
+
+  // --- Control & Streaming ---
+  { name: "Elgato Stream Deck MK2", category: "control", description: "Programmable control deck with 15 LCD keys for streaming shortcuts, app launching and smart home control.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/B09738CV2G?tag=YOUR-TAG", brandUrl: "https://www.elgato.com/uk/en/p/stream-deck-mk2-black" },
+  { name: "Google Chromecast", category: "control", description: "Streams content to the rear-projection Dell monitor. Simple casting for backgrounds, dashboards and reference material.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://store.google.com/gb/category/chromecast" },
+  { name: "Norwii Presentation Clicker", category: "control", description: "Wireless presenter remote for keynotes. Reliable, ergonomic and with a built-in laser pointer for live presentations.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.norwii.com" },
+
+  // --- 3D Printing ---
+  { name: "Bambu Lab A1 + AMS Lite", category: "printing", description: "Full-size multi-colour 3D printer with automatic material system. Fast, reliable prints for desk accessories and prototypes.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://bambulab.com/en/a1" },
+  { name: "Bambu Lab A1 Mini + AMS Lite", category: "printing", description: "Compact multi-colour 3D printer. Same great print quality in a smaller footprint for quick prints and small parts.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://bambulab.com/en/a1-mini" },
+
+  // --- Devices ---
+  { name: "MacBook Pro M3 Pro 14\"", category: "devices", description: "Primary workstation powering everything. M3 Pro chip handles 4K video editing, streaming and AI workloads effortlessly.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.apple.com/uk/macbook-pro/" },
+  { name: "iPhone 17 Air", category: "devices", description: "Daily driver phone. Ultra-thin design with incredible camera system for quick content capture on the go.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.apple.com/uk/iphone/" },
+  { name: "Samsung Galaxy Z Fold 7", category: "devices", description: "Foldable phone for multitasking and content review. The large inner display is perfect for monitoring streams remotely.", image: "", affiliateUrl: "https://www.amazon.co.uk/dp/PLACEHOLDER?tag=YOUR-TAG", brandUrl: "https://www.samsung.com/uk/smartphones/galaxy-z-fold/" },
+];
+
+const CATEGORIES = [
+  { id: "all", label: "All" },
+  { id: "cameras", label: "Cameras & Video" },
+  { id: "audio", label: "Audio" },
+  { id: "monitors", label: "Monitors" },
+  { id: "peripherals", label: "Peripherals" },
+  { id: "lighting", label: "Lighting" },
+  { id: "control", label: "Control & Streaming" },
+  { id: "printing", label: "3D Printing" },
+  { id: "devices", label: "Devices" },
+];
+
+// ============================================
+// SOFTWARE DATA — Edit your software stack below
+// ============================================
+const SOFTWARE = [
+  {
+    tab: "Live Streaming & Video",
+    items: [
+      { name: "Ecamm Live", description: "Professional live streaming and recording studio for Mac", url: "https://www.ecamm.com", tag: "paid", tagLabel: "Paid" },
+      { name: "Elgato Camera Hub", description: "Camera control and configuration app for all Elgato cameras", url: "https://www.elgato.com/uk/en/s/downloads", tag: "free", tagLabel: "Free" },
+      { name: "Elgato Stream Deck App", description: "Stream Deck button customisation and automation workflows", url: "https://www.elgato.com/uk/en/s/downloads", tag: "free", tagLabel: "Free" },
+    ]
+  },
+  {
+    tab: "Productivity",
+    items: [
+      { name: "Notion", description: "All-in-one workspace for notes, projects, wikis and team collaboration", url: "https://www.notion.so", tag: "freemium", tagLabel: "Freemium" },
+      { name: "Notion Calendar", description: "Smart calendar deeply integrated with Notion workspace and tasks", url: "https://www.notion.so/product/calendar", tag: "free", tagLabel: "Free" },
+      { name: "Notion Mail", description: "Email client built into the Notion ecosystem for unified workflow", url: "https://www.notion.so/product/mail", tag: "freemium", tagLabel: "Freemium" },
+    ]
+  },
+  {
+    tab: "AI Tools & Tech",
+    items: [
+      { name: "Claude / Claude Code", description: "AI assistant and AI-powered coding agent by Anthropic. My primary AI tool for everything.", url: "https://claude.ai", tag: "freemium", tagLabel: "Freemium" },
+      { name: "Cursor", description: "AI-first code editor for rapid development and vibe coding sessions", url: "https://cursor.sh", tag: "freemium", tagLabel: "Freemium" },
+      { name: "Wispr Flow", description: "Voice-to-text dictation tool — mapped to my MX Master 4 mouse button for instant input", url: "https://www.wispr.ai", tag: "paid", tagLabel: "Paid" },
+    ]
+  },
+];
+
+// ============================================
+// GALLERY DATA — Add your setup photos below
+// Set 'src' to an image URL or local path
+// ============================================
+const GALLERY = [
+  { src: "", alt: "Full desk setup overview", caption: "The full setup" },
+  { src: "", alt: "Camera and prompter closeup", caption: "Camera & Prompter" },
+  { src: "", alt: "Audio setup — RØDE PodMic and Wave XLR", caption: "Audio Corner" },
+  { src: "", alt: "Keyboard and peripherals", caption: "Input Devices" },
+  { src: "", alt: "3D printing station", caption: "3D Printing" },
+  { src: "", alt: "Lighting and ambience", caption: "Ambient Lighting" },
+];
+
+// ============================================
+// SVG ICONS (category-specific)
+// ============================================
+const ICONS = {
+  cameras: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+  audio: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 00-3 3v8a3 3 0 006 0V4a3 3 0 00-3-3z"/><path d="M19 10v2a7 7 0 01-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>',
+  monitors: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+  peripherals: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M6 12h.01M10 12h.01M14 12h.01M18 12h.01M8 16h8"/></svg>',
+  lighting: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 00-4 12.7V17h8v-2.3A7 7 0 0012 2z"/></svg>',
+  control: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>',
+  printing: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+  devices: '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M2 17h20M6 21h12"/></svg>',
+  streaming: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4.93 19.07A10 10 0 0112 2a10 10 0 017.07 17.07"/><path d="M7.76 16.24A6 6 0 0112 6a6 6 0 014.24 10.24"/><circle cx="12" cy="12" r="2"/></svg>',
+  productivity: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>',
+  ai: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2z"/></svg>',
+};
+
+const SOFTWARE_ICONS = { 'Live Streaming & Video': 'streaming', 'Productivity': 'productivity', 'AI Tools & Tech': 'ai' };
+const SOFTWARE_COLORS = { 'Live Streaming & Video': 'rgba(232, 78, 27, 0.12)', 'Productivity': 'rgba(59, 130, 246, 0.12)', 'AI Tools & Tech': 'rgba(168, 85, 247, 0.12)' };
+const SOFTWARE_STROKE = { 'Live Streaming & Video': '#e84e1b', 'Productivity': '#3b82f6', 'AI Tools & Tech': '#a855f7' };
+
+// ============================================
+// RENDER FUNCTIONS
+// ============================================
+
+function renderGallery() {
+  const grid = document.getElementById('galleryGrid');
+  grid.innerHTML = GALLERY.map((item, i) => `
+    <div class="gallery-item" onclick="openLightbox(${i})">
+      ${item.src
+        ? `<img src="${item.src}" alt="${item.alt}" loading="lazy">`
+        : `<div class="gallery-placeholder">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>${item.caption}</span>
+          </div>`
+      }
+    </div>
+  `).join('');
+}
+
+function renderFilters() {
+  const bar = document.getElementById('filterBar');
+  bar.innerHTML = CATEGORIES.map(c =>
+    `<button class="filter-pill${c.id === 'all' ? ' active' : ''}" data-filter="${c.id}">${c.label}</button>`
+  ).join('');
+
+  bar.addEventListener('click', e => {
+    const pill = e.target.closest('.filter-pill');
+    if (!pill) return;
+    bar.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    filterProducts(pill.dataset.filter);
+  });
+}
+
+function renderProducts() {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = PRODUCTS.map(p => {
+    const catLabel = CATEGORIES.find(c => c.id === p.category)?.label || p.category;
+    return `
+    <div class="product-card" data-category="${p.category}">
+      <div class="product-image">
+        ${p.image
+          ? `<img src="${p.image}" alt="${p.name}" loading="lazy">`
+          : `<div class="product-image-placeholder cat-${p.category}">${ICONS[p.category] || ''}</div>`
+        }
+        <span class="product-badge">${catLabel}</span>
+      </div>
+      <div class="product-info">
+        <h3 class="product-name">${p.name}</h3>
+        <p class="product-desc">${p.description}</p>
+        <div class="product-links">
+          <a href="${p.affiliateUrl}" target="_blank" rel="noopener noreferrer sponsored" class="btn-affiliate">
+            Amazon UK
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          </a>
+          ${p.brandUrl ? `<a href="${p.brandUrl}" target="_blank" rel="noopener noreferrer" class="btn-brand">Brand ↗</a>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function filterProducts(category) {
+  const cards = document.querySelectorAll('.product-card');
+  cards.forEach(card => {
+    const match = category === 'all' || card.dataset.category === category;
+    card.style.opacity = match ? '' : '0';
+    card.style.transform = match ? '' : 'scale(0.95)';
+    setTimeout(() => {
+      card.style.display = match ? '' : 'none';
+      if (match) { card.style.opacity = ''; card.style.transform = ''; }
+    }, match ? 0 : 300);
+  });
+}
+
+function renderSoftware() {
+  const tabsEl = document.getElementById('softwareTabs');
+  const contentEl = document.getElementById('softwareContent');
+  const indicator = document.getElementById('tabIndicator');
+
+  SOFTWARE.forEach((cat, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'tab-btn' + (i === 0 ? ' active' : '');
+    btn.textContent = cat.tab;
+    btn.dataset.tab = i;
+    tabsEl.insertBefore(btn, indicator);
+  });
+
+  function showTab(index) {
+    tabsEl.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === index));
+    const activeBtn = tabsEl.querySelector('.tab-btn.active');
+    if (activeBtn) {
+      indicator.style.left = activeBtn.offsetLeft + 'px';
+      indicator.style.width = activeBtn.offsetWidth + 'px';
+    }
+
+    const cat = SOFTWARE[index];
+    const iconKey = SOFTWARE_ICONS[cat.tab];
+    const bgColor = SOFTWARE_COLORS[cat.tab];
+    const strokeColor = SOFTWARE_STROKE[cat.tab];
+
+    contentEl.innerHTML = `<div class="software-grid">${cat.items.map(item => `
+      <div class="software-card">
+        <div class="software-icon" style="background:${bgColor}; color:${strokeColor}">
+          ${ICONS[iconKey] || ''}
+        </div>
+        <div class="software-info">
+          <div class="software-header">
+            <span class="software-name">${item.name}</span>
+            <span class="tag tag-${item.tag}">${item.tagLabel}</span>
+          </div>
+          <p class="software-desc">${item.description}</p>
+        </div>
+        <a href="${item.url}" target="_blank" rel="noopener noreferrer" class="software-link">Visit ↗</a>
+      </div>
+    `).join('')}</div>`;
+  }
+
+  tabsEl.addEventListener('click', e => {
+    const btn = e.target.closest('.tab-btn');
+    if (!btn) return;
+    showTab(Number(btn.dataset.tab));
+  });
+
+  showTab(0);
+}
+
+// ============================================
+// LIGHTBOX
+// ============================================
+let lightboxIndex = 0;
+
+function openLightbox(index) {
+  lightboxIndex = index;
+  const item = GALLERY[index];
+  const lb = document.getElementById('lightbox');
+  const img = document.getElementById('lightboxImg');
+  const cap = document.getElementById('lightboxCaption');
+  if (item.src) {
+    img.src = item.src;
+    img.alt = item.alt;
+    cap.textContent = item.caption;
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lightboxClose').onclick = closeLightbox;
+document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) closeLightbox(); });
+document.getElementById('lightboxPrev').onclick = () => { lightboxIndex = (lightboxIndex - 1 + GALLERY.length) % GALLERY.length; openLightbox(lightboxIndex); };
+document.getElementById('lightboxNext').onclick = () => { lightboxIndex = (lightboxIndex + 1) % GALLERY.length; openLightbox(lightboxIndex); };
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('active')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') document.getElementById('lightboxPrev').click();
+  if (e.key === 'ArrowRight') document.getElementById('lightboxNext').click();
+});
+
+// ============================================
+// NAVIGATION
+// ============================================
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+// Active nav highlighting
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+
+const navObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      navLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+    }
+  });
+}, { threshold: 0.3, rootMargin: '-80px 0px -40% 0px' });
+
+sections.forEach(s => navObserver.observe(s));
+
+// ============================================
+// SCROLL ANIMATIONS
+// ============================================
+const animObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      animObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('[data-animate], [data-animate-stagger]').forEach(el => animObserver.observe(el));
+
+// ============================================
+// INIT
+// ============================================
+renderGallery();
+renderFilters();
+renderProducts();
+renderSoftware();
+
+// Add transition styles to product cards after initial render
+setTimeout(() => {
+  document.querySelectorAll('.product-card').forEach(card => {
+    card.style.transition = 'opacity 0.3s ease, transform 0.4s var(--ease), border-color 0.4s, box-shadow 0.4s, display 0.3s';
+  });
+}, 100);
+</script>
+</body>
+</html>
