@@ -2,11 +2,19 @@ export default function Hero() {
   return (
     <section className="hero" id="hero">
       <div className="hero-bg">
+        <img
+          src="/images/gallery/full-desk-setup.jpg"
+          alt=""
+          className="hero-bg-photo"
+        />
+        <div className="hero-bg-overlay" />
         <div className="hero-orb hero-orb-1"></div>
         <div className="hero-orb hero-orb-2"></div>
-        <div className="hero-orb hero-orb-3"></div>
       </div>
       <div className="hero-content">
+        <div className="hero-headshot">
+          <img src="/images/headshot.jpg" alt="James Poulter" />
+        </div>
         <span className="hero-label">Content Creator &bull; Speaker &bull; AI Futurist</span>
         <h1 className="hero-title">JP&apos;s Desk<br /><span className="accent">Setup</span></h1>
         <p className="hero-subtitle">The tools, tech &amp; software powering my content creation, live streaming and AI workflow.</p>
