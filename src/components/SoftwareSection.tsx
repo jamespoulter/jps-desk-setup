@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect, useCallback } from 'react';
-import { SOFTWARE, SOFTWARE_ICONS, SOFTWARE_COLORS, SOFTWARE_STROKE } from '@/data/software';
-import { ICONS } from '@/data/icons';
+import { SOFTWARE, SOFTWARE_COLORS, SOFTWARE_STROKE } from '@/data/software';
+import { SOFTWARE_LOGOS } from '@/components/SoftwareLogos';
 import ScrollAnimator from '@/components/ScrollAnimator';
 import SectionHeader from '@/components/SectionHeader';
 
@@ -30,10 +30,8 @@ export default function SoftwareSection() {
   }, [updateIndicator]);
 
   const cat = SOFTWARE[activeTab];
-  const iconKey = SOFTWARE_ICONS[cat.tab];
   const bgColor = SOFTWARE_COLORS[cat.tab];
   const strokeColor = SOFTWARE_STROKE[cat.tab];
-  const IconComponent = ICONS[iconKey];
 
   return (
     <section className="section" id="software">
@@ -63,13 +61,15 @@ export default function SoftwareSection() {
       </ScrollAnimator>
       <ScrollAnimator>
         <div className="software-grid">
-          {cat.items.map((item, i) => (
+          {cat.items.map((item, i) => {
+            const LogoComponent = SOFTWARE_LOGOS[item.name];
+            return (
             <div key={i} className="software-card">
               <div
                 className="software-icon"
                 style={{ background: bgColor, color: strokeColor }}
               >
-                {IconComponent && <IconComponent />}
+                {LogoComponent && <LogoComponent className="software-logo-svg" />}
               </div>
               <div className="software-info">
                 <div className="software-header">
@@ -87,7 +87,8 @@ export default function SoftwareSection() {
                 Visit ↗
               </a>
             </div>
-          ))}
+            );
+          })}
         </div>
       </ScrollAnimator>
     </section>
