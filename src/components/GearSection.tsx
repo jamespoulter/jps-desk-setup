@@ -63,9 +63,12 @@ export default function GearSection() {
           const catLabel = CATEGORIES.find(c => c.id === p.category)?.label || p.category;
           const IconComponent = ICONS[p.category];
 
+          const slug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
           return (
             <div
               key={i}
+              id={`product-${slug}`}
               ref={el => { cardRefs.current[i] = el; }}
               className="product-card"
               data-category={p.category}

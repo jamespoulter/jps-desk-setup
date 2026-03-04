@@ -4,6 +4,15 @@ import { useLightbox } from '@/components/LightboxContext';
 import ScrollAnimator from '@/components/ScrollAnimator';
 import SectionHeader from '@/components/SectionHeader';
 
+function scrollToProduct(slug: string) {
+  const el = document.getElementById(`product-${slug}`);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    el.classList.add('product-card--highlight');
+    setTimeout(() => el.classList.remove('product-card--highlight'), 2000);
+  }
+}
+
 export default function GallerySection() {
   const { openLightbox } = useLightbox();
 
@@ -20,7 +29,29 @@ export default function GallerySection() {
             onClick={() => openLightbox(i)}
           >
             {item.src ? (
-              <img src={item.src} alt={item.alt} loading="lazy" />
+              <>
+                <img src={item.src} alt={item.alt} loading="lazy" />
+                {item.hotspots && item.hotspots.length > 0 && (
+                  <div className="hotspot-layer">
+                    {item.hotspots.map((hs, j) => (
+                      <button
+                        key={j}
+                        className="hotspot"
+                        style={{ left: `${hs.x}%`, top: `${hs.y}%` }}
+                        title={hs.label}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          scrollToProduct(hs.productSlug);
+                        }}
+                      >
+                        <span className="hotspot-ping" />
+                        <span className="hotspot-dot" />
+                        <span className="hotspot-label">{hs.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
             ) : (
               <div className="gallery-placeholder">
                 <svg

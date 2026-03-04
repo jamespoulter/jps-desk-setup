@@ -5,6 +5,7 @@ import Hero from '@/components/Hero';
 import GallerySection from '@/components/GallerySection';
 import GearSection from '@/components/GearSection';
 import SoftwareSection from '@/components/SoftwareSection';
+import ReelsSection from '@/components/ReelsSection';
 import BookSection from '@/components/BookSection';
 import Footer from '@/components/Footer';
 import Lightbox from '@/components/Lightbox';
@@ -17,6 +18,7 @@ export default function Page() {
       <GallerySection />
       <GearSection />
       <SoftwareSection />
+      <ReelsSection />
       <BookSection />
       <Footer />
       <Lightbox />

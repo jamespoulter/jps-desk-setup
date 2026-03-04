@@ -34,6 +34,7 @@ export default function Navigation() {
     { href: '#setup', label: 'Setup' },
     { href: '#gear', label: 'Gear' },
     { href: '#software', label: 'Software' },
+    { href: '#reels', label: 'Reels' },
     { href: '#book', label: 'AI at Work' },
   ];
 
