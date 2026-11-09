@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Fraunces } from 'next/font/google';
 import { GIFTS, type Gift, type GiftLink } from '@/data/giftGuide';
-import './premiere.css';
+import './premier.css';
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -93,7 +93,7 @@ function GiftCard({ gift }: { gift: Gift }) {
   );
 }
 
-export default function PremierePage() {
+export default function PremierPage() {
   return (
     <main className={`xm ${fraunces.variable}`}>
       <div className="xm-snow" aria-hidden="true" />
