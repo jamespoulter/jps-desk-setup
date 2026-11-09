@@ -44,7 +44,19 @@ const WisprFlowLogo: React.FC<LogoProps> = ({ className }) => (
   />
 );
 
+const PlaudLogo: React.FC<LogoProps> = ({ className }) => (
+  <img
+    className={className}
+    src="/images/software/plaud.png"
+    alt="Plaud"
+    width={24}
+    height={24}
+    style={{ borderRadius: 6, background: '#fff' }}
+  />
+);
+
 export const SOFTWARE_LOGOS: Record<string, React.FC<LogoProps>> = {
+  'Plaud': PlaudLogo,
   'Ecamm Live': EcammLogo,
   'Elgato Camera Hub': ElgatoLogo,
   'Elgato Stream Deck App': ElgatoLogo,

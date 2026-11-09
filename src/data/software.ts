@@ -31,9 +31,10 @@ export const SOFTWARE: SoftwareTab[] = [
   {
     tab: "AI Tools & Tech",
     items: [
-      { name: "Claude / Claude Code", description: "AI assistant and AI-powered coding agent by Anthropic. My primary AI tool for everything.", url: "https://claude.ai", tag: "freemium", tagLabel: "Freemium" },
+      { name: "Claude / Claude Code", description: "AI assistant and coding agent by Anthropic. My primary AI tool for everything. Pro and Max plans can also be given as gifts.", url: "https://claude.ai", tag: "freemium", tagLabel: "Freemium" },
       { name: "Cursor", description: "AI-first code editor for rapid development and vibe coding sessions", url: "https://cursor.sh", tag: "freemium", tagLabel: "Freemium" },
-      { name: "Wispr Flow", description: "Voice-to-text dictation tool — mapped to my MX Master 4 mouse button for instant input", url: "https://www.wispr.ai", tag: "paid", tagLabel: "Paid" },
+      { name: "Wispr Flow", description: "Voice-to-text dictation tool — mapped to my MX Master 4 mouse button for instant input", url: "https://wisprflow.ai/r?JAMES69", tag: "freemium", tagLabel: "Freemium" },
+      { name: "Plaud", description: "Companion app for my Plaud Note Pro. Turns recorded meetings and calls into transcripts, summaries and action points.", url: "https://uk.plaud.ai/", tag: "freemium", tagLabel: "Freemium" },
     ]
   },
 ];
